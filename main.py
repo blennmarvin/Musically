@@ -36,7 +36,8 @@ def track_info():
     results_tracks = results['tracks']['items']
     print("We found the following results:\n")
     for song in results_tracks:
-        print(f"{song['artists'][0]['name']} - {song['name']}\t{converter(song['duration_ms'])}")
+        print(f"{song['artists'][0]['name']} - {song['name']}\t{converter(song['duration_ms'])}\
+        \t{song['album']['release_date']}")
 
 
 def album_info():
@@ -60,7 +61,7 @@ def artist_info():
     print("-" * len(announce))
     print()
     for song in songs:
-        print(f"{song['name']}\t{converter(song['duration_ms'])}")
+        print(f"{song['name']}\t{converter(song['duration_ms'])}\t{song['album']['release_date']}")
 
 
 if __name__ == "__main__":
