@@ -1,14 +1,9 @@
-import sys
-
 import spotify
 from spotify import ms_to_min_sec as converter
 from spotify import format_string as formatting
 import argparse
 
-if len(sys.argv) == 3:
-    query = sys.argv[2]
 access_token = spotify.get_token()
-result_choice = ""
 
 
 def main():
@@ -22,16 +17,19 @@ def main():
     args = parser.parse_args()
 
     if args.track:
-        track_info()
+        track_info(args.track)
 
-    if args.album:
-        album_info()
+    elif args.album:
+        album_info(args.album)
 
-    if args.artist:
-        artist_info()
+    elif args.artist:
+        artist_info(args.artist)
+    else:
+        print("Please enter an option.\
+              Try --help to see how to use this tool")
 
 
-def track_info():
+def track_info(query):
     results = spotify.search(formatting(query), 'track', access_token)
     results_tracks = results['tracks']['items']
     print("We found the following results:\n")
@@ -40,7 +38,7 @@ def track_info():
         \t{song['album']['release_date']}")
 
 
-def album_info():
+def album_info(query):
     results = spotify.search(formatting(query), 'album', access_token)
     albums = results['albums']['items']
     print("We found the following results:\n")
@@ -48,7 +46,7 @@ def album_info():
         print(f"{album['artists'][0]['name']} - {album['name']}\t{album['release_date']}")
 
 
-def artist_info():
+def artist_info(query):
     results = spotify.search(formatting(query), 'artist', access_token)
     artist = results['artists']['items'][0]
     artist_id = results['artists']['items'][0]['id']
