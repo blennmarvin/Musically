@@ -51,7 +51,7 @@ def album_info(query):
 
     print("We found the following results:\n")
     for album in albums:
-        print(f"{album['artists'][0]['name']} - {album['name']}\t{album['release_date']}")
+        print(f"{album['artists'][0]['name']} - {album['name']}")
 
     print()
     while True:
