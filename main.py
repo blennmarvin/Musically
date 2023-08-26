@@ -2,31 +2,37 @@ import spotify
 from spotify import ms_to_min_sec as converter
 from spotify import format_string as formatting
 import argparse
+import getpass
+import sys
 
 access_token = spotify.get_token()
 
 
 def main():
-    parser = argparse.ArgumentParser(description="A simple tool to retrieve datas about your favorite "
-                                                 "artist/album/song.")
+    try:
+        parser = argparse.ArgumentParser(description="A simple tool to retrieve datas about your favorite "
+                                                     "artist/album/song.")
 
-    parser.add_argument('--track', help='Search for a track')
-    parser.add_argument('--album', help='Search for an album')
-    parser.add_argument('--artist', help='Search for an artist')
+        parser.add_argument('--track', help='Search for a track')
+        parser.add_argument('--album', help='Search for an album')
+        parser.add_argument('--artist', help='Search for an artist')
 
-    args = parser.parse_args()
+        args = parser.parse_args()
 
-    if args.track:
-        track_info(args.track)
+        if args.track:
+            track_info(args.track)
 
-    elif args.album:
-        album_info(args.album)
+        elif args.album:
+            album_info(args.album)
 
-    elif args.artist:
-        artist_info(args.artist)
-    else:
-        print("Please enter an option.\
-              Try --help to see how to use this tool")
+        elif args.artist:
+            artist_info(args.artist)
+        else:
+            print("Please enter an option.\
+                  Try --help to see how to use this tool")
+    except KeyboardInterrupt:
+        print("\nExiting the program.")
+        sys.exit()
 
 
 def track_info(query):
@@ -41,9 +47,27 @@ def track_info(query):
 def album_info(query):
     results = spotify.search(formatting(query), 'album', access_token)
     albums = results['albums']['items']
+    ids = [album['id'] for album in albums]
+
     print("We found the following results:\n")
     for album in albums:
         print(f"{album['artists'][0]['name']} - {album['name']}\t{album['release_date']}")
+
+    print()
+    while True:
+        choice = getpass.getpass('Press a number [0-4] to retrieve info on an album...\n')
+        try:
+            for num in ids:
+                if int(choice) == ids.index(num):
+                    print()
+                    spotify.tracklist(num, access_token)
+            if int(choice) >= 4:
+                print("Enter a valid choice")
+                continue
+            break
+        except ValueError:
+            print("Enter a valid choice")
+            continue
 
 
 def artist_info(query):

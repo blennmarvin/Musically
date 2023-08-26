@@ -1,5 +1,6 @@
 import requests
 import urllib.parse
+from datetime import datetime, date
 
 
 def get_token():
@@ -49,8 +50,8 @@ def get_top_tracks(artist_id, access_token):
         print("Error:", response.status_code)
 
 
-def get_albums(artist_id, access_token):
-    url = "https://api.spotify.com/v1/artists/" + artist_id + "/albums?market=FR&limit=1"
+def get_album(album_id, access_token):
+    url = "https://api.spotify.com/v1/albums/" + album_id + "?market=FR&limit=1"
     headers = {
         "Authorization": "Bearer " + access_token
     }
@@ -61,6 +62,21 @@ def get_albums(artist_id, access_token):
         return response.json()
     else:
         print("Error:", response.status_code)
+
+
+def tracklist(album_id, access_token):
+    project = get_album(album_id, access_token)
+    album_name = project['name']
+    artist_name = project['artists'][0]['name']
+    release_date = datetime.strptime(project['release_date'], "%Y-%m-%d")
+    album = project['tracks']['items']
+    intro = f"{album_name} by {artist_name} was released on {release_date.strftime('%B %d, %Y.')}"
+    print(intro)
+    print("[Tracklist]")
+    print('-'*len(intro))
+    print()
+    for track in album:
+        print(f"{track['track_number']}. {track['name']}")
 
 
 def format_string(string):
@@ -90,4 +106,4 @@ def ms_to_min_sec(milliseconds):
 
 
 if __name__ == "__main__":
-    print("Hi!")
+    print('Hi!')

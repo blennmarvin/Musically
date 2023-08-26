@@ -26,6 +26,13 @@ wget --quiet \
   --output-document \
   - 'https://api.spotify.com/v1/artists/5Mq7iqCWBzofK39FBqblNc/albums?market=FR'
 
+# get album
+wget --quiet \
+  --method GET \
+  --header 'Authorization: Bearer ' \
+  --output-document \
+  - 'https://api.spotify.com/v1/albums/4N1fROq2oeyLGAlQ1C1j18?market=FR'
+
 # search
 wget --quiet \
   --method GET \
