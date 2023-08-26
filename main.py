@@ -29,11 +29,11 @@ def main():
             artist_info(args.artist)
         else:
             print("Please enter an option. Try --help to see how to use this tool")
-    except KeyboardInterrupt:
-        print("\nExiting the program.")
     except TypeError:
         print("Options can not be null.")
         sys.exit()
+    except KeyboardInterrupt:
+        print("\nExiting the program.")
 
 
 def track_info(query):
