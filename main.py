@@ -31,9 +31,9 @@ def main():
             print("Please enter an option. Try --help to see how to use this tool")
     except TypeError:
         print("Options can not be null.")
-        sys.exit()
     except KeyboardInterrupt:
         print("\nExiting the program.")
+        sys.exit()
 
 
 def track_info(query):
@@ -78,13 +78,23 @@ def artist_info(query):
     artist_tracks = spotify.get_top_tracks(artist_id, access_token)
     songs = artist_tracks['tracks']
 
+    # Calculate the maximum lengths of the columns
+    max_name_length = max(len(song['name']) for song in songs)
+    max_duration_length = max(len(converter(song['duration_ms'])) for song in songs)
+
+    # Print the header
     announce = f"{artist['name']} has {artist['followers']['total']} followers "
     print(announce)
     print("Here are their top tracks:")
-    print("-" * len(announce))
+    # print("-" * (len(announce)-1))
     print()
+
+    # Print each song
     for song in songs:
-        print(f"{song['name']}\t{converter(song['duration_ms'])}\t{song['album']['release_date']}")
+        name = song['name'].ljust(max_name_length)
+        duration = converter(song['duration_ms']).ljust(max_duration_length)
+        release_date = song['album']['release_date']
+        print(f"{name} {duration} {release_date}")
 
 
 if __name__ == "__main__":
