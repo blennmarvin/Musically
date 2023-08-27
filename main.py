@@ -68,7 +68,7 @@ def album_info(query):
                 if int(choice) == ids.index(num):
                     print()
                     spotify.tracklist(num, access_token)
-            if int(choice) >= 4:
+            if int(choice) > 4:
                 print("Enter a valid choice")
                 continue
             break
