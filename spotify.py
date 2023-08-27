@@ -71,12 +71,16 @@ def tracklist(album_id, access_token):
     release_date = datetime.strptime(project['release_date'], "%Y-%m-%d")
     album = project['tracks']['items']
     intro = f"{album_name} by {artist_name} was released on {release_date.strftime('%B %d, %Y.')}"
+    max_track_number_length = max(len(str(track['track_number'])) for track in album)
+    max_track_name_length = max(len(track['name']) for track in album)
     print(intro)
     print("[Tracklist]")
     print('-'*len(intro))
     print()
     for track in album:
-        print(f"{track['track_number']}. {track['name']}")
+        track_number = str(track['track_number']).ljust(max_track_number_length)
+        track_name = track['name'].ljust(max_track_name_length)
+        print(f"{track_number}. {track_name}")
 
 
 def format_string(string):

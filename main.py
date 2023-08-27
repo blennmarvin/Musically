@@ -40,9 +40,15 @@ def track_info(query):
     results = spotify.search(formatting(query), 'track', access_token)
     results_tracks = results['tracks']['items']
     print("We found the following results:\n")
+    # Calculate the maximum lengths of the columns
+    max_artist_name_length = max(len(song['artists'][0]['name']) for song in results_tracks)
+    max_name_length = max(len(song['name']) for song in results_tracks)
+    # Print each song
     for song in results_tracks:
-        print(f"{song['artists'][0]['name']} - {song['name']}\t{converter(song['duration_ms'])}\
-        \t{song['album']['release_date']}")
+        artist_name = song['artists'][0]['name'].ljust(max_artist_name_length)
+        name = song['name'].ljust(max_name_length)
+        duration = converter(song['duration_ms'])
+        print(f"{artist_name} {name} {duration} ")
 
 
 def album_info(query):
