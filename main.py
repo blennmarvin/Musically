@@ -2,7 +2,6 @@ import spotify
 from spotify import ms_to_min_sec as converter
 from spotify import format_string as formatting
 import argparse
-import getpass
 import sys
 
 access_token = spotify.get_token()
@@ -62,7 +61,7 @@ def album_info(query):
 
     print()
     while True:
-        choice = getpass.getpass('Press a number [0-4] to retrieve info on an album...\n')
+        choice = input('Enter a number [0-4] to retrieve info on an album: ')
         try:
             for num in ids:
                 if int(choice) == ids.index(num):
