@@ -3,6 +3,7 @@ from spotify import ms_to_min_sec as converter
 from spotify import format_string as formatting
 import argparse
 import sys
+import math
 
 access_token = spotify.get_token()
 
@@ -80,6 +81,7 @@ def artist_info(query):
     results = spotify.search(formatting(query), 'artist', access_token)
     artist = results['artists']['items'][0]
     artist_id = results['artists']['items'][0]['id']
+    artist_followers = artist['followers']['total']
     artist_tracks = spotify.get_top_tracks(artist_id, access_token)
     songs = artist_tracks['tracks']
 
@@ -88,10 +90,14 @@ def artist_info(query):
     max_duration_length = max(len(converter(song['duration_ms'])) for song in songs)
 
     # Print the header
-    announce = f"{artist['name']} has {artist['followers']['total']} followers "
-    print(announce)
+    if artist_followers > math.pow(10, 6):
+        artist_followers = math.floor(artist_followers / math.pow(10, 6))
+        announce = f"{artist['name']} has {artist_followers}M followers"
+        print(announce)
+    else:
+        announce = f"{artist['name']} has {artist_followers} followers"
+        print(announce)
     print("Here are their top tracks:")
-    # print("-" * (len(announce)-1))
     print()
 
     # Print each song
